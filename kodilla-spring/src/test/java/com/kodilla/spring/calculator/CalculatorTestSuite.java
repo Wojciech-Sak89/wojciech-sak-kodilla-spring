@@ -20,11 +20,13 @@ public class CalculatorTestSuite {
         ApplicationContext context =
                 new AnnotationConfigApplicationContext("com.kodilla.spring");
         Calculator calculator = context.getBean(Calculator.class);
+
         //When
         double adding = calculator.add(a, b);
         double subtracting = calculator.sub(a, b);
         double multiplying = calculator.mul(a, b);
         double dividing = calculator.div(a, b);
+
         //Then
         Assert.assertEquals(12, adding, 0.0001);
         Assert.assertEquals(6, subtracting, 0.0001);

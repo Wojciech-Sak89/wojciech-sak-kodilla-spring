@@ -15,12 +15,15 @@ public class BoardTestSuite {
     @Test
     public void testTaskAdd() {
         //Given
-        ApplicationContext context = new AnnotationConfigApplicationContext(BoardConfig.class);
+        ApplicationContext context =
+                new AnnotationConfigApplicationContext(BoardConfig.class);
         Board board = context.getBean(Board.class);
+
         //When
         board.getToDoList().addTask("Learn Design Patterns");
         board.getDoneList().addTask("Learn Java Syntax");
         board.getInProgressList().addTask("Learn Spring");
+
         //Then
         Assert.assertEquals("Learn Design Patterns", board.getToDoList().getTasks().get(0));
         Assert.assertEquals("Learn Java Syntax", board.getDoneList().getTasks().get(0));
