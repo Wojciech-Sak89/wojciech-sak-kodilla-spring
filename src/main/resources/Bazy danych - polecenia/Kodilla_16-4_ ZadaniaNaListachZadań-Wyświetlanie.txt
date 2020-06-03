@@ -1,0 +1,24 @@
+W ostatnim submodule, w ramach zadania, utworzone zostały tabele ISSUESS oraz ISSUESLISTS. Napisz kilka zapytań SQL, oto co powinny one zwracać:
+
+1. Listę zadań z tabeli ISSUESS z dołączonymi do nich nazwami list zadań z tabeli ISSUESLISTS:
+
+SELECT IL.NAME, I.SUMMARY, I.DESCRIPTION
+FROM ISSUES I
+JOIN ISSUESLISTS IL ON I.ISSUESLIST_ID = IL.ID;
+
+
+2. Listę zadań z tabeli ISSUESS z przypisanymi do nich użytkownikami z tabeli USERS
+
+SELECT U.FIRSTNAME, U.LASTNAME, I.SUMMARY, I.DESCRIPTION
+FROM ISSUES I
+JOIN USERS U ON I.USER_ID_ASSIGNEDTO = U.ID;
+
+// ORDER BY U.LASTNAME, U.FIRSTNAME;
+
+3. Imiona i nazwiska użytkowników posiadających zadania, wraz z informacją o ilości zadań, które są do nich przypisane:
+
+SELECT U.FIRSTNAME, U.LASTNAME, COUNT(*) AS ASSIGNED_ISSUES
+FROM USERS U
+JOIN ISSUES I ON U.ID = I.USER_ID_ASSIGNEDTO
+GROUP BY U.ID
+HAVING COUNT(*) > 0;
