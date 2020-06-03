@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public final class Library extends Prototype {
-    String name;
-    Set<Book> books = new HashSet<>();
+    private String name;
+    private Set<Book> books = new HashSet<>();
 
     public Library(final String name) {
         this.name = name;
@@ -26,7 +26,7 @@ public final class Library extends Prototype {
     }
 
     public Library deepCopy() throws CloneNotSupportedException {
-        Library clonedLibrary = (Library) super.clone();
+        Library clonedLibrary = (Library)super.clone();
         clonedLibrary.books = new HashSet<>();
         for(Book book : books) {
             Book clonedBook = new Book(book.getTitle(), book.getAuthor(), book.getPublicationDate());

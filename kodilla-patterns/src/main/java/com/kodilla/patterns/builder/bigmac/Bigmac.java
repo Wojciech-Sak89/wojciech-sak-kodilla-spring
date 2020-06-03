@@ -26,7 +26,8 @@ public class Bigmac {
     public static final String INGREDIENT_SHRIMP = "SHRIMP";
 
     public static class BigmacBuilder {
-        private String bun, sauce;
+        private String bun;
+        private String sauce;
         private int burgers;
         private final List<String> ingredients = new ArrayList<>();
 

@@ -1,9 +1,9 @@
 package com.kodilla.patterns.factory.tasks;
 
 public class TaskFactory {
-    public static final String SHOPPING = "CIRCLE";
-    public static final String PAINTING = "SQUARE";
-    public static final String DRIVING = "RECTANGLE";
+    public static final String SHOPPING = "SHOPPING";
+    public static final String PAINTING = "PAINTING";
+    public static final String DRIVING = "DRIVING";
 
     public final Task createTask(final String taskClass) {
         switch (taskClass) {

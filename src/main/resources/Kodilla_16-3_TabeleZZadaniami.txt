@@ -1,0 +1,71 @@
+(
+    ID               	SERIAL PRIMARY KEY,
+    ISSUESLIST_ID  	BIGINT UNSIGNED NOT NULL,
+    SUMMARY 		VARCHAR(100),
+    DESCRIPTION 	VARCHAR(1024),
+    USER_ID_ASSIGNEDTO  BIGINT UNSIGNED NOT NULL,
+
+    FOREIGN KEY (ISSUESLIST_ID)      REFERENCES ISSUESLISTS(ID),
+    FOREIGN KEY (USER_ID_ASSIGNEDTO) REFERENCES USERS(ID)
+);
+
+INSERT INTO ISSUESLISTS (NAME)
+VALUES ("ToDo");
+
+
+INSERT INTO ISSUESLISTS (NAME)
+VALUES ("In progress");
+
+
+INSERT INTO ISSUESLISTS (NAME)
+VALUES ("Done");
+
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (1, "send emails", "send emails to our best clients with special offer", 1);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (1, "backup files", "computers 1, 2 and 10 needs backup now!", 2);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (1, "call Higaldi", "Higaldi needs apologies for last issues with production AGFXC", 3);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (1, "prepare conference", "Genesis Ultra is coming, we need at least a sketch of a plan", 4);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (1, "check files", "this morning files mark_I and mark_II crashed for unknown reasons", 5);
+
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (2, "funcionality autocomplete", "we need to autocomplete our search browser with some suggestions", 5);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (2, "funcionality ads", "we have 5 more new clients with their ads and no place to put them", 4);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (2, "funcionality authentication", "really simple auth system: user_name + password", 3);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (2, "funcionality search recent", "add 5 recent searches to choose while typing query", 2);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (2, "funcionality delete account", "we need deep deletion option", 1);
+
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (3, "new ideas - tools", "desktop research on tools enhancing creativity", 1);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (3, "new ideas - coaches", "choose someone to make a training for dep. 3", 3);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (3, "new ideas - literature", "description1", 5);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (3, "new ideas - prework", "desktop research on books about creativity enhancement", 2);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (3, "party", "standard party booking and flow on planet marvel", 2);
+
+COMMIT;
