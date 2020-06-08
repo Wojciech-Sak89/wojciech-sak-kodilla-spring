@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 
 public class StatiscticsCalculatorTestSuite {
 
-    int counter = 1;
+    static int counter = 1;
 
     @Before
     public void before() {

@@ -1,3 +1,10 @@
+import com.kodilla.stream.forumuser.Forum;
+import com.kodilla.stream.forumuser.ForumUser;
+
+import java.time.LocalDate;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class StreamMain {
     public static void main(String[] args) {
 //        SaySomething saySomething = new SaySomething();
@@ -92,19 +99,19 @@ public class StreamMain {
 //        System.out.println(theResultStringOfBooks);
 
 
-//        Forum theForum = new Forum();
-//        LocalDate now = LocalDate.now();
-//        LocalDate twentyYearsAgo = now.minusYears(20);
-//
-//        Map<Integer, ForumUser> theResultMapOfForumUsers = theForum.getUserList().stream()
-//                .filter(forumUser -> forumUser.getSex() == 'M')
-//                .filter(forumUser -> (forumUser.getBirthYear().isBefore(twentyYearsAgo)) || (forumUser.getBirthYear().isEqual(twentyYearsAgo)))
-//                .filter(forumUser -> forumUser.getPostsPublished() > 0)
-//                .collect(Collectors.toMap(ForumUser::getId, forumUser -> forumUser));
-//
-//        theResultMapOfForumUsers.entrySet().stream()
-//                .map(entry -> entry.getKey() + ": " + entry.getValue())
-//                .forEach(System.out::println);
+        Forum theForum = new Forum();
+        LocalDate now = LocalDate.now();
+        LocalDate twentyYearsAgo = now.minusYears(20);
+
+        Map<Integer, ForumUser> theResultMapOfForumUsers = theForum.getUserList().stream()
+                .filter(forumUser -> forumUser.getSex() == 'M')
+                .filter(forumUser -> (forumUser.getBirthYear().isBefore(twentyYearsAgo)) || (forumUser.getBirthYear().isEqual(twentyYearsAgo)))
+                .filter(forumUser -> forumUser.getPostsPublished() > 0)
+                .collect(Collectors.toMap(ForumUser::getId, forumUser -> forumUser));
+
+        theResultMapOfForumUsers.entrySet().stream()
+                .map(entry -> entry.getKey() + ": " + entry.getValue())
+                .forEach(System.out::println);
 
 
     }

@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 public class CollectionTestSuite {
-    int counter = 0;
+    static int counter = 0;
 
     @Before
     public void before() {

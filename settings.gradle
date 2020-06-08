@@ -13,4 +13,5 @@ include 'kodilla-course:kodilla-hibernate'
 findProject(':kodilla-course:kodilla-hibernate')?.name = 'kodilla-hibernate'
 include 'kodilla-hibernate'
 include 'kodilla-hibernate'
+include 'kodilla-sudoku'
 
