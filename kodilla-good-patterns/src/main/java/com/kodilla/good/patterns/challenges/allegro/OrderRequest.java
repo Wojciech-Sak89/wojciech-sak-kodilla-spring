@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 
 public class OrderRequest {
-    private User user;
-    private HashMap<String, Integer> orderedItems;
-    private LocalDate localDate;
+    private final User user;
+    private final HashMap<String, Integer> orderedItems;
+    private final LocalDate localDate;
 
     public OrderRequest(User user, HashMap<String, Integer> orderedItems, LocalDate localDate) {
         this.user = user;
