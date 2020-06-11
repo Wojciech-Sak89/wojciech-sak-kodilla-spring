@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CompanyDaoTestSuite {
@@ -55,6 +57,52 @@ public class CompanyDaoTestSuite {
         try {
             companyDao.deleteById(softwareMachineId);
             companyDao.deleteById(dataMaestersId);
+            companyDao.deleteById(greyMatterId);
+        } catch (Exception e) {
+            //do nothing
+        }
+    }
+
+    @Test
+    public void testNamedQueries() {
+        //Given
+        Employee johnSmith = new Employee("John", "Smith");
+        Employee stephanieClarckson = new Employee("Stephanie", "Clarckson");
+        Employee lindaKovalsky = new Employee("Linda", "Kovalsky");
+
+        Company softwareMachine = new Company("Software Machine");
+        Company softwareMaesters = new Company("Software Maesters");
+        Company greyMatter = new Company("Grey Matter");
+
+        softwareMachine.getEmployees().add(johnSmith);
+        softwareMaesters.getEmployees().add(stephanieClarckson);
+        softwareMaesters.getEmployees().add(lindaKovalsky);
+        greyMatter.getEmployees().add(johnSmith);
+        greyMatter.getEmployees().add(lindaKovalsky);
+
+        johnSmith.getCompanies().add(softwareMachine);
+        johnSmith.getCompanies().add(greyMatter);
+        stephanieClarckson.getCompanies().add(softwareMaesters);
+        lindaKovalsky.getCompanies().add(softwareMaesters);
+        lindaKovalsky.getCompanies().add(greyMatter);
+
+        companyDao.save(softwareMachine);
+        int softwareMachineId = softwareMachine.getId();
+        companyDao.save(softwareMaesters);
+        int softwareMaestersId = softwareMaesters.getId();
+        companyDao.save(greyMatter);
+        int greyMatterId = greyMatter.getId();
+
+        //When
+        List<Company> softwareCompanies = companyDao.retrieveCompaniesByNamesStartedWith("Sof");
+
+        //Then
+        Assert.assertEquals(2, softwareCompanies.size());
+
+        //CleanUp
+        try {
+            companyDao.deleteById(softwareMachineId);
+            companyDao.deleteById(softwareMaestersId);
             companyDao.deleteById(greyMatterId);
         } catch (Exception e) {
             //do nothing
