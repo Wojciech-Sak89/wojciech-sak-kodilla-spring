@@ -1,13 +1,16 @@
 package com.kodilla.sudoku;
 
+import com.kodilla.sudoku.util.Coordinate;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class SudokuElement {
     public static int EMPTY = 0;
-    private List<Integer> possibleValues;
-    private List<Integer> discardedValues = new ArrayList<>();
     private int value;
+    private final List<Integer> possibleValues;
+    private Coordinate coordinate;
+
 
     public SudokuElement() {
         this.possibleValues = initPossibleValues();
@@ -16,7 +19,7 @@ public class SudokuElement {
 
     private ArrayList<Integer> initPossibleValues() {
         ArrayList<Integer> standardPossibleValues = new ArrayList<>();
-        for (int i = 1; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             standardPossibleValues.add(i);
         }
 
@@ -27,21 +30,26 @@ public class SudokuElement {
         return value;
     }
 
-    public boolean setValue(int value) {
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public List<Integer> getPossibleValues() {
+        return possibleValues;
+    }
+
+    public void setValue(int value) {
         if (possibleValues.contains(value)) {
             this.value = value;
-            int temp;
-            discardedValues.add(value);
 
-            for (int i = 0; i < possibleValues.size(); i++) {
-                temp = possibleValues.get(i);
-                if (value == temp) {
-                    possibleValues.remove(i);
-                }
-            }
-            return true;
+            if (value != EMPTY)
+            possibleValues.remove(Integer.valueOf(value));
+
         }
-        return false;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
     @Override

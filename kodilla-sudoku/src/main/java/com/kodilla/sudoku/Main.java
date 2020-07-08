@@ -7,8 +7,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String userRequest;
         SudokuGame theGame = new SudokuGame(new SudokuBoard());
-
         boolean gameFinished = false;
+
+        theGame.displayBoard();
 
             while (!gameFinished) {
                 System.out.println("Please insert some values. Format: \"[column 1-9],[row 1-9],[value 1-9]\"" +
@@ -20,6 +21,8 @@ public class Main {
                     theGame.displayBoard();
                 } else {
                     theGame.userSetValue(userRequest);
+                    theGame.displayBoard();
+                    theGame.printTestPossibleVals();
                 }
 
 //                gameFinished = theGame.resolveSudoku();
@@ -29,8 +32,3 @@ public class Main {
 
     }
 }
-
-/*
-Wyświetlanie planszy zrealizuj przy pomocy znaków
-| (pipe) oraz - (myślnik) dla ramek (jako metodę toString() klasy SudokuBoard).
-*/

@@ -1,5 +1,7 @@
 package com.kodilla.sudoku;
 
+import com.kodilla.sudoku.util.Coordinate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +18,13 @@ public class SudokuRow {
 
     private ArrayList<SudokuElement> initRow() {
         ArrayList<SudokuElement> row = new ArrayList<>();
+        SudokuElement sudokuElement;
+
         for (int i = 1; i < 10; i++) {
-            row.add(new SudokuElement());
+            sudokuElement = new SudokuElement();
+            sudokuElement.setCoordinate(new Coordinate(i, 0));
+
+            row.add(sudokuElement);
         }
 
         return row;
