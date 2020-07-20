@@ -1,14 +1,23 @@
 package com.kodilla.hibernate.manytomany;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@NamedQuery(
-        name = "Employee.retrieveEmployeeByLastName",
-        query = "FROM Employee WHERE lastname = :LASTNAME"
-)
+@Component
+@NamedQueries({
+        @NamedQuery(
+                name = "Employee.retrieveEmployeeByLastName",
+                query = "FROM Employee WHERE lastname = :LASTNAME"
+        ),
+        @NamedQuery(
+                name = "Employee.retrieveEmployeeByAnyFragmentOfLastName",
+                query = "FROM Employee WHERE lastname LIKE :LASTNAME_ANY_CHARACTERS"
+        )
+        })
 @Entity
 @Table(name = "EMPLOYEES")
 public class Employee {

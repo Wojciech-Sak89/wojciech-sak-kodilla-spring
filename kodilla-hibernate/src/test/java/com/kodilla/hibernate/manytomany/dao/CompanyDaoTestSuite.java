@@ -64,7 +64,56 @@ public class CompanyDaoTestSuite {
     }
 
     @Test
-    public void testNamedQueries() {
+    public void testNamedQuery_RetrieveCompanies_ByNamesStartedWith() {
+        //Given
+        Employee johnSmith = new Employee("John", "Smith");
+        Employee stephanieClarckson = new Employee("Stephanie", "Clarckson");
+        Employee lindaKovalsky = new Employee("Linda", "Kovalsky");
+
+        Company softwareMachine = new Company("Software Machine");
+        Company softwareMaesters = new Company("Software Maesters");
+        Company greyMatter = new Company("Grey Matter");
+
+        softwareMachine.getEmployees().add(johnSmith);
+        softwareMaesters.getEmployees().add(stephanieClarckson);
+        softwareMaesters.getEmployees().add(lindaKovalsky);
+        greyMatter.getEmployees().add(johnSmith);
+        greyMatter.getEmployees().add(lindaKovalsky);
+
+        johnSmith.getCompanies().add(softwareMachine);
+        johnSmith.getCompanies().add(greyMatter);
+        stephanieClarckson.getCompanies().add(softwareMaesters);
+        lindaKovalsky.getCompanies().add(softwareMaesters);
+        lindaKovalsky.getCompanies().add(greyMatter);
+
+        companyDao.save(softwareMachine);
+        int softwareMachineId = softwareMachine.getId();
+        System.out.println(softwareMachineId);
+        companyDao.save(softwareMaesters);
+        int softwareMaestersId = softwareMaesters.getId();
+        System.out.println(softwareMaestersId);
+        companyDao.save(greyMatter);
+        int greyMatterId = greyMatter.getId();
+        System.out.println(greyMatter);
+
+        //When
+        List<Company> softwareCompanies = companyDao.retrieveCompaniesByNamesStartedWith("Sof");
+
+        //Then
+        Assert.assertEquals(2, softwareCompanies.size());
+
+        //CleanUp
+        try {
+            companyDao.deleteById(softwareMachineId);
+            companyDao.deleteById(softwareMaestersId);
+            companyDao.deleteById(greyMatterId);
+        } catch (Exception e) {
+            System.out.println("Problem with cleanup " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testNamedQuery_RetrieveCompanies_ByAnyFragmentOfTheirName() {
         //Given
         Employee johnSmith = new Employee("John", "Smith");
         Employee stephanieClarckson = new Employee("Stephanie", "Clarckson");
@@ -94,10 +143,10 @@ public class CompanyDaoTestSuite {
         int greyMatterId = greyMatter.getId();
 
         //When
-        List<Company> softwareCompanies = companyDao.retrieveCompaniesByNamesStartedWith("Sof");
+        List<Company> softwareCompanies = companyDao.retrieveCompanies_ByAnyFragmentOfTheirName("%aes%");
 
         //Then
-        Assert.assertEquals(2, softwareCompanies.size());
+        Assert.assertEquals(1, softwareCompanies.size());
 
         //CleanUp
         try {
@@ -108,4 +157,15 @@ public class CompanyDaoTestSuite {
             //do nothing
         }
     }
+
+//    @Test
+//    public void deleteSomeRows() {
+//        try {
+//            companyDao.deleteById(457);
+//            companyDao.deleteById(459);
+//            companyDao.deleteById(461);
+//        } catch (Exception e) {
+//            //do nothing
+//        }
+//    }
 }
