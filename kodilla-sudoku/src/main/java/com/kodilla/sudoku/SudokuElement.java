@@ -1,8 +1,8 @@
 package com.kodilla.sudoku;
 
 import com.kodilla.sudoku.util.Coordinate;
+import com.kodilla.sudoku.util.Initializer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SudokuElement {
@@ -13,17 +13,8 @@ public class SudokuElement {
 
 
     public SudokuElement() {
-        this.possibleValues = initPossibleValues();
+        this.possibleValues = Initializer.initPossibleValues();
         this.value = EMPTY;
-    }
-
-    private ArrayList<Integer> initPossibleValues() {
-        ArrayList<Integer> standardPossibleValues = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            standardPossibleValues.add(i);
-        }
-
-        return standardPossibleValues;
     }
 
     public int getValue() {

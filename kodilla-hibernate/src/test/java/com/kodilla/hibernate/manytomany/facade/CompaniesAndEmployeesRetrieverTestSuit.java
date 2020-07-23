@@ -23,7 +23,6 @@ public class CompaniesAndEmployeesRetrieverTestSuit {
 
     @Test
     public void testRetrieverFacade() throws RetrievingException {
-
         //Given
         CompanyWithEmployeesDto softwareMachine = new CompanyWithEmployeesDto(new Company("Software Machine"),
                 new Employee("John", "Smith"),

@@ -5,14 +5,15 @@ import com.kodilla.hibernate.manytomany.Employee;
 import com.kodilla.hibernate.manytomany.dao.CompanyDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 @Component
 public class CompanyWithEmployeesDto {
-//    @Autowired
-//    private CompanyDao companyDao;
+    @Autowired
+    private CompanyDao companyDao;
 
     private final Company company;
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyWithEmployeesDto.class);

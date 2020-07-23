@@ -3,6 +3,7 @@ package com.kodilla.sudoku;
 import com.kodilla.sudoku.util.Coordinate;
 import com.kodilla.sudoku.util.Sections;
 import com.kodilla.sudoku.util.SudokuTabulation;
+import com.kodilla.sudoku.util.Validator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -106,69 +107,11 @@ public class SudokuBoard {
 
         List<List<Integer>> sections = initSectionsList();
 
-        if (rowsInvalid(rowValues)) return false;
-        if (columnsInvalid(columnValues)) return false;
-        if (sectionsInvalid(blockValues, sections)) return false;
+        if (Validator.rowsInvalid(rowValues, sudokuRows)) return false;
+        if (Validator.columnsInvalid(columnValues, sudokuRows)) return false;
+        if (Validator.sectionsInvalid(blockValues, sections, sudokuRows)) return false;
 
         return true;
-    }
-
-    private boolean rowsInvalid(Set<Integer> rowValues) {
-        for (SudokuRow row : sudokuRows) {
-            for (SudokuElement element : row.getSudokuElements()) {
-                if (!(isEmptySudEl(element))) {
-                    if (!rowValues.add(element.getValue())) {
-                        return true;
-                    }
-                }
-            }
-            rowValues.clear();
-        }
-        return false;
-    }
-
-    private boolean columnsInvalid(Set<Integer> columnValues) {
-        SudokuElement sudokuElement;
-        for (int i = 0; i < 9; i++) {
-            for (SudokuRow row : sudokuRows) {
-                sudokuElement = row.getSudokuElements().get(i);
-                if (!(isEmptySudEl(sudokuElement))) {
-                    if (!columnValues.add(
-                            sudokuElement.getValue())) {
-                        return true;
-                    }
-                }
-            }
-            columnValues.clear();
-        }
-        return false;
-    }
-
-    private boolean sectionsInvalid(Set<Integer> blockValues, List<List<Integer>> sections) {
-        SudokuElement sudokuElement;
-        for (List<Integer> sectionHorizontal : sections) {
-            for (List<Integer> sectionVertical : sections) {
-
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        sudokuElement = sudokuRows
-                                .get(sectionHorizontal.get(i))
-                                .getSudokuElements()
-                                .get(sectionVertical.get(j));
-
-                        if (!(isEmptySudEl(sudokuElement))) {
-                            if (!blockValues.add(
-                                    sudokuElement.getValue())) {
-                                return true;
-                            }
-                        }
-
-                    }
-                }
-                blockValues.clear();
-            }
-        }
-        return false;
     }
 
     private List<List<Integer>> initSectionsList() {
