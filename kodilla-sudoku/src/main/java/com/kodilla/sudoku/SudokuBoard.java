@@ -1,63 +1,32 @@
 package com.kodilla.sudoku;
 
-import com.kodilla.sudoku.util.Coordinate;
-import com.kodilla.sudoku.util.Sections;
-import com.kodilla.sudoku.util.SudokuTabulation;
-import com.kodilla.sudoku.util.Validator;
+import com.kodilla.sudoku.solve.Prototype;
+import com.kodilla.sudoku.exceptions.SudokuUnsolvable;
+import com.kodilla.sudoku.util.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SudokuBoard {
-    private final List<SudokuRow> sudokuRows;
+public final class SudokuBoard extends Prototype {
+    private List<SudokuRow> sudokuRows;
 
     public SudokuBoard() {
-        this.sudokuRows = initBoard();
-        initSectionsForElements();
+        this.sudokuRows = Initializer.initBoard();
+        Initializer.initSectionsForElements(sudokuRows);
     }
 
     public List<SudokuRow> getSudokuRows() {
         return sudokuRows;
     }
 
-    private ArrayList<SudokuRow> initBoard() {
-        ArrayList<SudokuRow> row = new ArrayList<>();
-        SudokuRow sudokuRow;
-
-        for (int i = 1; i < 10; i++) {
-            sudokuRow = new SudokuRow();
-            initRowCoordinate(sudokuRow, i);
-
-            row.add(sudokuRow);
-        }
-        return row;
-    }
-
-    private void initRowCoordinate(SudokuRow sudokuRow, int i) {
-        for (SudokuElement sudElement : sudokuRow.getSudokuElements()) {
-            sudElement.getCoordinate().setRow(i);
-        }
-    }
-
-    private void initSectionsForElements() {
-        int section;
-
-        for (SudokuRow row : sudokuRows) {
-            for (SudokuElement element:
-                    row.getSudokuElements()) {
-                section = new Sections().determinateSection(element.getCoordinate());
-                element.getCoordinate().setSection(section);
-            }
-        }
-    }
-
     public List<Integer> getRowValues(int row) {
+//        System.out.println("getRowValues(int row) row=" + row);
         List<Integer> rowValues = new ArrayList<>();
 
         SudokuRow sudokuRow = sudokuRows
-                .get(SudokuTabulation.setRow(row));
+                .get(Tabulation.calculateRow(row));
 
         for (SudokuElement element : sudokuRow.getSudokuElements()) {
             if (!(isEmptySudEl(element))) {
@@ -74,7 +43,7 @@ public class SudokuBoard {
         for (int i = 0; i < 9; i++) {
             element = sudokuRows.get(i)
                     .getSudokuElements()
-                    .get(SudokuTabulation.setColumn(column));
+                    .get(Tabulation.calculateColumn(column));
             if (!(isEmptySudEl(element))) {
                 columnVals.add(element.getValue());
             }
@@ -83,16 +52,16 @@ public class SudokuBoard {
     }
 
     public List<Integer> getSectionValues(int section) {
-        List<Coordinate> sectionCoordinates =  new Sections().getSection(section);
+        List<Coordinate> sectionCoordinates = new Sections().getSection(section);
 
         List<Integer> sectionValues = new ArrayList<>();
         SudokuElement element;
 
         for (Coordinate coordinate : sectionCoordinates) {
             element = sudokuRows
-                    .get(SudokuTabulation.setRow(coordinate.getRow()))
+                    .get(Tabulation.calculateRow(coordinate.getRow()))
                     .getSudokuElements()
-                    .get(SudokuTabulation.setColumn(coordinate.getColumn()));
+                    .get(Tabulation.calculateColumn(coordinate.getColumn()));
             if (!(isEmptySudEl(element))) {
                 sectionValues.add(element.getValue());
             }
@@ -105,7 +74,7 @@ public class SudokuBoard {
         Set<Integer> columnValues = new HashSet<>();
         Set<Integer> blockValues = new HashSet<>();
 
-        List<List<Integer>> sections = initSectionsList();
+        List<List<Integer>> sections = Initializer.initSectionsList();
 
         if (Validator.rowsInvalid(rowValues, sudokuRows)) return false;
         if (Validator.columnsInvalid(columnValues, sudokuRows)) return false;
@@ -114,30 +83,61 @@ public class SudokuBoard {
         return true;
     }
 
-    private List<List<Integer>> initSectionsList() {
-        List<Integer> beginning = new ArrayList<>();
-        List<Integer> center = new ArrayList<>();
-        List<Integer> end = new ArrayList<>();
-        beginning.add(0);
-        beginning.add(1);
-        beginning.add(2);
-        center.add(3);
-        center.add(4);
-        center.add(5);
-        end.add(6);
-        end.add(7);
-        end.add(8);
+    public boolean isContradictory() {
+        for (SudokuRow row : sudokuRows) {
+            for (SudokuElement element : row.getSudokuElements()) {
+                if (element.isUnsolvable()) {
+                    System.out.println("\nThis element in unslovable: ");
+                    element.printCoordinatePossibleValuesCurrentValue();
+                    System.out.println("Size of poss vals: " + element.getPossibleValues().size() + "\n");
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-        List<List<Integer>> sections = new ArrayList<>();
-        sections.add(beginning);
-        sections.add(center);
-        sections.add(end);
-
-        return sections;
+    public SudokuElement getElementByCoordinates(Coordinate coordinate) throws SudokuUnsolvable {
+        for (SudokuRow row : sudokuRows) {
+            for (SudokuElement element : row.getSudokuElements()) {
+                if (element.getCoordinate().getColumn() == coordinate.getColumn() &&
+                        element.getCoordinate().getRow() == coordinate.getRow())
+                    return element;
+            }
+        }
+        throw new SudokuUnsolvable("Element " + coordinate + " could not be found");
     }
 
     private boolean isEmptySudEl(SudokuElement sudokuElement) {
         return sudokuElement.getValue() == SudokuElement.EMPTY;
+    }
+
+    public SudokuBoard deepCopy() throws CloneNotSupportedException {
+        System.out.println("deepCopy()");
+
+        SudokuBoard clonedBoard = (SudokuBoard) super.clone();
+        clonedBoard.sudokuRows = new ArrayList<>();
+
+        for (SudokuRow row : sudokuRows) {
+            SudokuRow clonedRow = new SudokuRow();
+            clonedRow.getSudokuElements().clear();
+
+            for (SudokuElement element : row.getSudokuElements()) {
+                SudokuElement clonedElement = new SudokuElement();
+
+                clonedElement.setValue(element.getValue());
+                clonedElement.getPossibleValues().clear();
+                clonedElement.getPossibleValues().addAll(new ArrayList<>(element.getPossibleValues()));
+                clonedElement.setCoordinate(element.getCoordinate());
+
+                clonedRow.getSudokuElements().add(clonedElement);
+            }
+
+            clonedBoard.sudokuRows.add(clonedRow);
+        }
+        System.out.println("Cloned board: \n" + clonedBoard);
+        Display.allPossibleValues(clonedBoard);
+        return clonedBoard;
     }
 
     @Override

@@ -29,13 +29,30 @@ public class SudokuElement {
         return possibleValues;
     }
 
+    public boolean isEmpty() {
+        return value == SudokuElement.EMPTY;
+    }
+
+    public boolean isUnsolvable() {
+        return isEmpty() && possibleValues.size() == 1;
+    }
+
     public void setValue(int value) {
+        this.value = value;
+    }
+
+    public void setUserValue(int value) {
+        System.out.println("Setting user value...");
         if (possibleValues.contains(value)) {
             this.value = value;
 
             if (value != EMPTY)
-            possibleValues.remove(Integer.valueOf(value));
+                possibleValues.remove(Integer.valueOf(value));
 
+            System.out.println("Value has been successfully set! Element: " + this);
+        } else {
+            System.out.println("Value (" + value + ") for element (" + coordinate + ") is invalid, " +
+                    "try another number.");
         }
     }
 
@@ -43,8 +60,16 @@ public class SudokuElement {
         this.coordinate = coordinate;
     }
 
+    public void printCoordinatePossibleValuesCurrentValue() {
+        System.out.println(coordinate + ", possibleVals: " + possibleValues + ", current value: " + value);
+    }
+
     @Override
     public String toString() {
-        return Integer.toString(value);
+        return "SudokuElement{" +
+                "value=" + value +
+                ", possibleValues=" + possibleValues +
+                ", coordinate=" + coordinate +
+                '}';
     }
 }

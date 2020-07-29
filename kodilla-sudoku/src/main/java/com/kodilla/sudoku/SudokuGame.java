@@ -1,142 +1,78 @@
 package com.kodilla.sudoku;
 
 import com.kodilla.sudoku.exceptions.SudokuUnsolvable;
-import com.kodilla.sudoku.util.SudokuTabulation;
+import com.kodilla.sudoku.solve.Backtrack;
+import com.kodilla.sudoku.solve.SaveLoad;
+import com.kodilla.sudoku.solve.Solver;
+import com.kodilla.sudoku.util.Display;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.ArrayDeque;
+
+import static com.kodilla.sudoku.solve.Solver.solveByElimination;
 
 public class SudokuGame {
 
-    private final SudokuBoard sudokuBoard;
+    private SudokuBoard sudokuBoard;
+    private final ArrayDeque<Backtrack> backtracks = new ArrayDeque<>();
 
     public SudokuGame(SudokuBoard sudokuBoard) {
         this.sudokuBoard = sudokuBoard;
     }
 
-    public boolean resolveSudoku() {
-        return false;
+    public void resolveSudoku() throws SudokuUnsolvable {
+        boolean resolvingWithEliminator = true;
+
+        while (true) {
+            if (SaveLoad.loadLastStateCounter == 2) break;
+
+            System.out.println("resolveSudoku(): Backtrack size: " + backtracks.size());
+
+            resolvingWithEliminator = solveByElimination(resolvingWithEliminator, sudokuBoard);
+
+            System.out.println("\nsolveByElimination has finished, starting second part of resolveSudoku()\n");
+            if (sudokuBoard.isContradictory()) {
+                System.out.println("Board is contradictory...");
+                Display.board(sudokuBoard);
+                SaveLoad.loadLastState(backtracks, sudokuBoard, this);
+            } else if (!isSolved()) {
+                Solver.guessProcedure(backtracks, sudokuBoard, this);
+            } else if (isSolved()) {
+                System.out.println("Sudoku has been successfully solved!");
+                Display.board(sudokuBoard);
+                break;
+            } else {
+                System.out.println("Unexpected error occured while solving!");
+                Display.board(sudokuBoard);
+                break;
+            }
+        }
     }
 
-    private boolean setBoardValue(int sudokuColumn, int sudokuRow, Integer sudokuValue) {
-        SudokuElement sudokuElement = sudokuBoard
-                .getSudokuRows().get(sudokuRow)
-                .getSudokuElements().get(sudokuColumn);
-
-        if (sudokuElement.getValue() != SudokuElement.EMPTY &&
-                sudokuValue != SudokuElement.EMPTY) {
-
-            System.out.println("Error! This field already has value! Please choose another area.");
-            return false;
-        }
-
-        sudokuElement.setValue(sudokuValue);
-
-        try {
-            updateBoard();
-        } catch (SudokuUnsolvable e) {
-            System.out.println("Unable to update board with current values in board: " + e.getMessage());
-        }
-
-        return true;
-    }
-
-    private void updateBoard() throws SudokuUnsolvable {
-        Set<Integer> valuesToDiscard = new HashSet<>();
-
-        List<Integer> rowValuesToDiscard;
-        List<Integer> columnValuesToDiscard;
-        List<Integer> sectionValuesToDiscard;
-
-        int elementRow;
-        int elementColumn;
-        int elementSection;
+    public boolean isSolved() {
+        int unsolvedElements = 0;
 
         for (SudokuRow row : sudokuBoard.getSudokuRows()) {
             for (SudokuElement element : row.getSudokuElements()) {
-                elementRow = element.getCoordinate().getRow();
-                elementColumn = element.getCoordinate().getColumn();
-                elementSection = element.getCoordinate().getSection();
-
-                if (element.getValue() == SudokuElement.EMPTY) {
-
-
-                    rowValuesToDiscard = sudokuBoard.getRowValues(elementRow);
-                    columnValuesToDiscard = sudokuBoard.getColumnValues(elementColumn);
-                    sectionValuesToDiscard = sudokuBoard.getSectionValues(elementSection);
-
-                    valuesToDiscard.addAll(rowValuesToDiscard);
-                    valuesToDiscard.addAll(columnValuesToDiscard);
-                    valuesToDiscard.addAll(sectionValuesToDiscard);
-
-                    for (int value : valuesToDiscard) {
-                        element.getPossibleValues().remove(Integer.valueOf(value));
-                    }
-                    valuesToDiscard.clear();
+                if (element.isEmpty()) {
+                    unsolvedElements++;
                 }
-
-                setBoardValFromElementLastPossibleValue(
-                        elementRow, elementColumn, element);
-
-            }
-        }
-    }
-
-    private void setBoardValFromElementLastPossibleValue(int elementRow, int elementColumn, SudokuElement element) throws SudokuUnsolvable {
-        boolean isSet;
-        if (element.getPossibleValues().size() == 2) {
-            isSet = setBoardValue(SudokuTabulation.setColumn(elementColumn),
-                    SudokuTabulation.setRow(elementRow),
-                    element.getPossibleValues().get(1));
-
-            if (!isSet) {
-                throw new SudokuUnsolvable();
             }
         }
 
-
-    }
-
-    public void userSetValue(String userInput) {
-        String[] input = userInput.split(","); // add format error
-
-        setBoardValue(
-                SudokuTabulation.setColumn(input[0]),
-                SudokuTabulation.setRow(input[1]),
-                Integer.parseInt(input[2]));
-
-        if (!sudokuBoard.isValid()) {
-            System.out.println("Error! Invalid input, Sudoku unsupported value for row/column/section!");
-            discardUserInput(input);
+        if (unsolvedElements > 0) {
+            System.out.println("Sudoku unsolved");
+            return false;
+        } else {
+            System.out.println("Sudoku solved");
+            return true;
         }
-
     }
 
-    private void discardUserInput(String[] input) {
-        setBoardValue(
-                SudokuTabulation.setColumn(input[0]),
-                SudokuTabulation.setRow(input[1]),
-                SudokuElement.EMPTY);
-
-        putBackPossibleVal(input);
+    public SudokuBoard getSudokuBoard() {
+        return sudokuBoard;
     }
 
-    private void putBackPossibleVal(String[] input) {
-        sudokuBoard.getSudokuRows().get(SudokuTabulation.setColumn(input[0]))
-                .getSudokuElements().get(SudokuTabulation.setRow(input[1]))
-                .getPossibleValues()
-                .add(Integer.parseInt(input[2]));
-    }
-
-    public void displayBoard() {
-        System.out.println(sudokuBoard);
-    }
-
-    public void printTestPossibleVals() {
-        List<Integer> listOfRemainingPossVals =
-                sudokuBoard.getSudokuRows().get(0).getSudokuElements().get(2).getPossibleValues();
-
-        System.out.println("listOfRemainingPossVals element 1,3: " + listOfRemainingPossVals);
+    public void setSudokuBoard(SudokuBoard sudokuBoard) {
+        this.sudokuBoard = sudokuBoard;
     }
 }
