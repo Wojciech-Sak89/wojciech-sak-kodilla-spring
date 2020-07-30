@@ -10,9 +10,10 @@ public class Display {
     }
 
     public static void allPossibleValues(SudokuBoard sudokuBoard) {
+        System.out.println("DISPLAY all possible values: ");
         for (SudokuRow row : sudokuBoard.getSudokuRows()) {
             for (SudokuElement element : row.getSudokuElements()) {
-                element.printCoordinatePossibleValuesCurrentValue();
+                System.out.println(element);
             }
         }
     }

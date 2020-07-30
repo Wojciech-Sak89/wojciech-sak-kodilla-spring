@@ -50,8 +50,7 @@ public class Solver {
         return resolvingWithEliminator;
     }
 
-    public static boolean setBoardValFromElementLastPossibleValue(int elementRow, int elementColumn, SudokuElement element, SudokuBoard sudokuBoard)
-            throws SudokuUnsolvable {
+    public static boolean setBoardValFromElementLastPossibleValue(int elementRow, int elementColumn, SudokuElement element, SudokuBoard sudokuBoard) {
         System.out.println("setBoardValFromElementLastPossibleValue() starts");
         boolean isSet;
         boolean elementResolved = false;
@@ -73,7 +72,7 @@ public class Solver {
     }
 
     public static void guessProcedure(ArrayDeque<Backtrack> backtracks, SudokuBoard sudokuBoard, SudokuGame game) throws SudokuUnsolvable {
-        System.out.println("\nGuessing procedure...");
+        System.out.println("\nSTARTING guessing procedure...\n");
         System.out.println("State of board before guessing");
         Display.board(sudokuBoard);
 
@@ -98,31 +97,31 @@ public class Solver {
         if (!wasSet) {
             SaveLoad.loadLastState(backtracks, sudokuBoard, game);
         }
+        System.out.println("\nFINISHED guessing procedure");
     }
 
 
     private static SudokuElement getFirstEmptyElement(ArrayDeque<Backtrack> backtracks, SudokuBoard sudokuBoard, SudokuGame game) throws SudokuUnsolvable {
-        System.out.println("getFirstEmptyElement()");
+        System.out.println("STARTING getFirstEmptyElement()\n");
         for (SudokuRow row : sudokuBoard.getSudokuRows()) {
             for (SudokuElement element : row.getSudokuElements()) {
                 if (element.isEmpty()) {
                     System.out.println("First empty element: " +
                             element.getCoordinate() + element.getPossibleValues());
+                    System.out.println("FINISHED getFirstEmptyElement(). First empty element has been found: " + element);
                     return element;
                 }
             }
         }
-        System.out.println("There are no empty elements! Trying to delete last backtrack, loading previous.");
+        System.out.println("\nThere are no empty elements! Trying to delete last backtrack, loading previous.\n");
 
         if (backtracks.size() >= 2) {
             SaveLoad.loadPenultimate(backtracks, sudokuBoard, game);
         } else {
-            throw new SudokuUnsolvable("There are no backtrack objects left!");
+            throw new SudokuUnsolvable("\nThere are no backtrack objects left!\n");
         }
+
+        System.out.println("FINISHED getFirstEmptyElement() with new SudokuElement()\n");
         return new SudokuElement();
     }
-
-
-
-
 }

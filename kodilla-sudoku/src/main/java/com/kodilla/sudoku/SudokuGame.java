@@ -23,19 +23,35 @@ public class SudokuGame {
         boolean resolvingWithEliminator = true;
 
         while (true) {
-            if (SaveLoad.loadLastStateCounter == 2) break;
+            if (isSolved()) {
+                System.out.println("Sudoku has been successfully solved!");
+                Display.board(sudokuBoard);
+                break;
+            }
 
             System.out.println("resolveSudoku(): Backtrack size: " + backtracks.size());
 
             resolvingWithEliminator = solveByElimination(resolvingWithEliminator, sudokuBoard);
 
-            System.out.println("\nsolveByElimination has finished, starting second part of resolveSudoku()\n");
+
+            System.out.println("\nsolveByElimination has finished, starting second part of resolveSudoku()\n"); // extract method
             if (sudokuBoard.isContradictory()) {
-                System.out.println("Board is contradictory...");
+
+                System.out.println("STARTING sudokuBoard.isContradictory()");
+
                 Display.board(sudokuBoard);
                 SaveLoad.loadLastState(backtracks, sudokuBoard, this);
+
+                System.out.println("FINISHED sudokuBoard.isContradictory()");
+
             } else if (!isSolved()) {
+
+                System.out.println("STARTING resolveSudoku(): Sudoku !isSolved()");
+
                 Solver.guessProcedure(backtracks, sudokuBoard, this);
+
+                System.out.println("FINISHED resolveSudoku(): Sudoku !isSolved()");
+
             } else if (isSolved()) {
                 System.out.println("Sudoku has been successfully solved!");
                 Display.board(sudokuBoard);
@@ -48,7 +64,7 @@ public class SudokuGame {
         }
     }
 
-    public boolean isSolved() {
+    public boolean isSolved() throws SudokuUnsolvable {
         int unsolvedElements = 0;
 
         for (SudokuRow row : sudokuBoard.getSudokuRows()) {
@@ -60,11 +76,14 @@ public class SudokuGame {
         }
 
         if (unsolvedElements > 0) {
-            System.out.println("Sudoku unsolved");
+            System.out.println("Sudoku unsolved. Unsolved elements: " + unsolvedElements);
             return false;
-        } else {
-            System.out.println("Sudoku solved");
+        } else if (unsolvedElements == 0) {
+            System.out.println("Sudoku solved, unsolved elements: " + unsolvedElements);
             return true;
+        } else {
+            throw new SudokuUnsolvable("Error! Could not say if sudoku was solved or unsolved. " +
+                    "Unsolved elements: " + unsolvedElements);
         }
     }
 

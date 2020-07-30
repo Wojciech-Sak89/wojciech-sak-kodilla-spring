@@ -4,9 +4,9 @@ import com.kodilla.sudoku.SudokuBoard;
 import com.kodilla.sudoku.util.Coordinate;
 
 public class Backtrack {
-    SudokuBoard sudokuBoard;
-    Coordinate coordinate;
-    int guessNumber;
+    private SudokuBoard sudokuBoard;
+    private final Coordinate coordinate;
+    private final int guessNumber;
 
     public Backtrack(SudokuBoard sudokuBoard, Coordinate coordinate, int guessNumber) {
         this.sudokuBoard = sudokuBoard;

@@ -39,7 +39,7 @@ public class Validator {
         return false;
     }
 
-    public static boolean sectionsInvalid(Set<Integer> blockValues, List<List<Integer>> sections, List<SudokuRow> sudokuRows) {
+    public static boolean sectionsInvalid(Set<Integer> blockValues, List<List<Integer>> sections, List<SudokuRow> sudokuRows) { // simplify
         SudokuElement sudokuElement;
         for (List<Integer> sectionHorizontal : sections) {
             for (List<Integer> sectionVertical : sections) {

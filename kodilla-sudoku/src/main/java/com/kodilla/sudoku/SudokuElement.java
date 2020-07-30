@@ -42,7 +42,7 @@ public class SudokuElement {
     }
 
     public void setUserValue(int value) {
-        System.out.println("Setting user value...");
+        System.out.println("STARTING setUserValue()");
         if (possibleValues.contains(value)) {
             this.value = value;
 
@@ -54,6 +54,7 @@ public class SudokuElement {
             System.out.println("Value (" + value + ") for element (" + coordinate + ") is invalid, " +
                     "try another number.");
         }
+        System.out.println("FINISHED setUserValue()\n");
     }
 
     public void setCoordinate(Coordinate coordinate) {
@@ -67,9 +68,9 @@ public class SudokuElement {
     @Override
     public String toString() {
         return "SudokuElement{" +
-                "value=" + value +
+                "coordinate=" + coordinate +
+                ", value=" + value +
                 ", possibleValues=" + possibleValues +
-                ", coordinate=" + coordinate +
                 '}';
     }
 }

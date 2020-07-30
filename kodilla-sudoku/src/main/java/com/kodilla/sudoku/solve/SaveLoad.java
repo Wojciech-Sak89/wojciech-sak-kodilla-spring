@@ -24,17 +24,10 @@ public class SaveLoad {
         }
     }
 
-    public static void loadLastState(ArrayDeque<Backtrack> backtracks, SudokuBoard sudokuBoard, SudokuGame game) throws SudokuUnsolvable {
-        System.out.println("\n loadLastState: Displaying all possible values BEFORE loading");
-        Display.allPossibleValues(sudokuBoard);
-
+    public static void loadLastState(ArrayDeque<Backtrack> backtracks, SudokuBoard sudokuBoard, SudokuGame game)
+            throws SudokuUnsolvable {
         loadLastStateCounter++;
-
-        System.out.println("\nloadLastState()");
-
-        System.out.println("Current state of board BEFORE loading: ");
-        Display.board(sudokuBoard);
-        Display.allPossibleValues(sudokuBoard);
+        preLoadInfo(sudokuBoard);
 
         SudokuElement sudokuElement;
 
@@ -45,28 +38,25 @@ public class SaveLoad {
 
             sudokuBoard = backtrack.getSudokuBoard();
 
-            System.out.println("Current state of board AFTER loading: ");
-            Display.board(sudokuBoard);
-            Display.allPossibleValues(sudokuBoard);
-
             sudokuElement = sudokuBoard.getElementByCoordinates(backtrack.getCoordinate());
 
-            System.out.println("\nloadLastState: backtrack.getGuessNumber() to remove from field possible nums:" + backtrack.getGuessNumber() +
-                    "\n possible nums: " + sudokuElement.getPossibleValues() + " coordinate: " + sudokuElement.getCoordinate());
+            elementToChangeInfo(sudokuElement, backtrack);
 
-            // delete in current board
-            sudokuElement.getPossibleValues().remove(Integer.valueOf(backtrack.getGuessNumber()));
-            // delete also in backtrack!
-            backtrack.getSudokuBoard().getElementByCoordinates(backtrack.getCoordinate()).getPossibleValues().remove(Integer.valueOf(backtrack.getGuessNumber()));
 
-            System.out.println("Adjusted sudoku element: ");
-            sudokuElement.printCoordinatePossibleValuesCurrentValue();
+            if (backtrackElementToAdjust_HasGuessNumAsPossibleNum(backtrack)){
+                System.out.println("backtrackElementToAdjust_HasGuessNumAsPossibleNum(backtrack) = true");
 
-            System.out.println("Displaying all possible values AFTER loading (CHECK FOR CHANGES)\n");
-            Display.allPossibleValues(sudokuBoard);
+                deleteInCurrentBoard(sudokuElement, backtrack);
+                deleteInBacktrack(backtrack);
+                realLoading(sudokuBoard, game);
 
-            // real loading
-            game.setSudokuBoard(sudokuBoard);
+                afterLoadingInfo(sudokuBoard, sudokuElement);
+            } else {
+                System.out.println("backtrackElementToAdjust_HasGuessNumAsPossibleNum(backtrack) = false");
+                System.out.println("better load penultimate...");
+                loadPenultimate(backtracks, sudokuBoard, game);
+            }
+
 
             if (sudokuElement.getPossibleValues().size() == 1) {
                 loadPenultimate(backtracks, sudokuBoard, game);
@@ -82,12 +72,68 @@ public class SaveLoad {
         System.out.println("loadLastState has finished\n");
     }
 
+    private static boolean backtrackElementToAdjust_HasGuessNumAsPossibleNum(Backtrack backtrack) throws SudokuUnsolvable {
+        return backtrack.getSudokuBoard()
+                .getElementByCoordinates(backtrack.getCoordinate())
+                .getPossibleValues().contains(backtrack.getGuessNumber());
+    }
+
+    private static void elementToChangeInfo(SudokuElement sudokuElement, Backtrack backtrack) {
+        System.out.println("\nloadLastState: backtrack.getGuessNumber() to remove from field possible nums:" + backtrack.getGuessNumber() +
+                "\n possible nums: " + sudokuElement.getPossibleValues() + " coordinate: " + sudokuElement.getCoordinate());
+    }
+
+    private static void afterLoadingInfo(SudokuBoard sudokuBoard, SudokuElement sudokuElement) {
+        System.out.println("Current state of board AFTER loading: ");
+        Display.board(sudokuBoard);
+        Display.allPossibleValues(sudokuBoard);
+
+        adjustementInfo(sudokuBoard, sudokuElement);
+    }
+
+    private static void adjustementInfo(SudokuBoard sudokuBoard, SudokuElement sudokuElement) {
+        System.out.println("Adjusted sudoku element: ");
+        sudokuElement.printCoordinatePossibleValuesCurrentValue();
+
+        System.out.println("Displaying all possible values AFTER loading (CHECK FOR CHANGES)\n");
+        Display.allPossibleValues(sudokuBoard);
+    }
+
+    private static void realLoading(SudokuBoard sudokuBoard, SudokuGame game) {
+        game.setSudokuBoard(sudokuBoard);
+    }
+
+    private static void deleteInBacktrack(Backtrack backtrack) throws SudokuUnsolvable {
+        backtrack.getSudokuBoard()
+                .getElementByCoordinates(backtrack.getCoordinate())
+                .getPossibleValues()
+                .remove(Integer.valueOf(backtrack.getGuessNumber()));
+    }
+
+    private static void deleteInCurrentBoard(SudokuElement sudokuElement, Backtrack backtrack) {
+        sudokuElement.getPossibleValues().remove(Integer.valueOf(backtrack.getGuessNumber()));
+    }
+
+    private static void preLoadInfo(SudokuBoard sudokuBoard) {
+        System.out.println("\nSTARTING loadLastState: Displaying all possible values BEFORE loading");
+        Display.allPossibleValues(sudokuBoard);
+
+
+        System.out.println("\nloadLastState()");
+
+        System.out.println("Current state of board BEFORE loading: ");
+        Display.board(sudokuBoard);
+        Display.allPossibleValues(sudokuBoard);
+    }
+
     public static void loadPenultimate(ArrayDeque<Backtrack> backtracks, SudokuBoard sudokuBoard, SudokuGame game) throws SudokuUnsolvable {
         loadPenultimateCounter++;
 
-        System.out.println("loadPenultimate()");
+        System.out.println("STARTING loadPenultimate()");
         backtracks.pop();
         loadLastState(backtracks, sudokuBoard, game);
+
+        System.out.println("FINISHED loadPenultimate()");
     }
 
 }
