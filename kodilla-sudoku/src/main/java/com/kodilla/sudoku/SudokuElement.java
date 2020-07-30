@@ -42,27 +42,19 @@ public class SudokuElement {
     }
 
     public void setUserValue(int value) {
-        System.out.println("STARTING setUserValue()");
         if (possibleValues.contains(value)) {
             this.value = value;
 
             if (value != EMPTY)
                 possibleValues.remove(Integer.valueOf(value));
-
-            System.out.println("Value has been successfully set! Element: " + this);
         } else {
             System.out.println("Value (" + value + ") for element (" + coordinate + ") is invalid, " +
                     "try another number.");
         }
-        System.out.println("FINISHED setUserValue()\n");
     }
 
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
-    }
-
-    public void printCoordinatePossibleValuesCurrentValue() {
-        System.out.println(coordinate + ", possibleVals: " + possibleValues + ", current value: " + value);
     }
 
     @Override

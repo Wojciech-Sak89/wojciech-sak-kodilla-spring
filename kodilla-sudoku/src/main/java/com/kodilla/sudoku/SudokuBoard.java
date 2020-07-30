@@ -22,7 +22,6 @@ public final class SudokuBoard extends Prototype {
     }
 
     public List<Integer> getRowValues(int row) {
-//        System.out.println("getRowValues(int row) row=" + row);
         List<Integer> rowValues = new ArrayList<>();
 
         SudokuRow sudokuRow = sudokuRows
@@ -52,7 +51,7 @@ public final class SudokuBoard extends Prototype {
     }
 
     public List<Integer> getSectionValues(int section) {
-        List<Coordinate> sectionCoordinates = new Sections().getSection(section);
+        List<Coordinate> sectionCoordinates = new Sections().getSectionCoordinates(section);
 
         List<Integer> sectionValues = new ArrayList<>();
         SudokuElement element;
@@ -87,7 +86,6 @@ public final class SudokuBoard extends Prototype {
         for (SudokuRow row : sudokuRows) {
             for (SudokuElement element : row.getSudokuElements()) {
                 if (element.isUnsolvable()) {
-                    System.out.println("\nThis element in unslovable: " + element);
                     return true;
                 }
             }
@@ -111,8 +109,6 @@ public final class SudokuBoard extends Prototype {
     }
 
     public SudokuBoard deepCopy() throws CloneNotSupportedException {
-        System.out.println("STARTING deepCopy()");
-
         SudokuBoard clonedBoard = (SudokuBoard) super.clone();
         clonedBoard.sudokuRows = new ArrayList<>();
 
@@ -133,10 +129,6 @@ public final class SudokuBoard extends Prototype {
 
             clonedBoard.sudokuRows.add(clonedRow);
         }
-        System.out.println("Cloned board: \n" + clonedBoard);
-        Display.allPossibleValues(clonedBoard);
-
-        System.out.println("FINISHED deepCopy()");
         return clonedBoard;
     }
 

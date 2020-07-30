@@ -2,7 +2,7 @@ package com.kodilla.sudoku;
 
 import com.kodilla.sudoku.exceptions.SudokuUnsolvable;
 import com.kodilla.sudoku.solve.Backtrack;
-import com.kodilla.sudoku.solve.SaveLoad;
+import com.kodilla.sudoku.solve.Load;
 import com.kodilla.sudoku.solve.Solver;
 import com.kodilla.sudoku.util.Display;
 
@@ -24,44 +24,30 @@ public class SudokuGame {
 
         while (true) {
             if (isSolved()) {
-                System.out.println("Sudoku has been successfully solved!");
-                Display.board(sudokuBoard);
+                solvedInfo("Sudoku has been successfully solved!");
                 break;
             }
 
-            System.out.println("resolveSudoku(): Backtrack size: " + backtracks.size());
-
             resolvingWithEliminator = solveByElimination(resolvingWithEliminator, sudokuBoard);
 
-
-            System.out.println("\nsolveByElimination has finished, starting second part of resolveSudoku()\n"); // extract method
             if (sudokuBoard.isContradictory()) {
-
-                System.out.println("STARTING sudokuBoard.isContradictory()");
-
-                Display.board(sudokuBoard);
-                SaveLoad.loadLastState(backtracks, sudokuBoard, this);
-
-                System.out.println("FINISHED sudokuBoard.isContradictory()");
-
+                Load.loadLastState(backtracks, sudokuBoard, this);
             } else if (!isSolved()) {
-
-                System.out.println("STARTING resolveSudoku(): Sudoku !isSolved()");
-
                 Solver.guessProcedure(backtracks, sudokuBoard, this);
-
-                System.out.println("FINISHED resolveSudoku(): Sudoku !isSolved()");
-
             } else if (isSolved()) {
-                System.out.println("Sudoku has been successfully solved!");
-                Display.board(sudokuBoard);
+                solvedInfo("Sudoku has been successfully solved!");
                 break;
             } else {
-                System.out.println("Unexpected error occured while solving!");
+                System.out.println("Unexpected error!");
                 Display.board(sudokuBoard);
                 break;
             }
         }
+    }
+
+    private void solvedInfo(String s) {
+        System.out.println(s);
+        Display.board(sudokuBoard);
     }
 
     public boolean isSolved() throws SudokuUnsolvable {
@@ -76,10 +62,8 @@ public class SudokuGame {
         }
 
         if (unsolvedElements > 0) {
-            System.out.println("Sudoku unsolved. Unsolved elements: " + unsolvedElements);
             return false;
         } else if (unsolvedElements == 0) {
-            System.out.println("Sudoku solved, unsolved elements: " + unsolvedElements);
             return true;
         } else {
             throw new SudokuUnsolvable("Error! Could not say if sudoku was solved or unsolved. " +

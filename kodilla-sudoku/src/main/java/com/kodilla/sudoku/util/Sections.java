@@ -1,10 +1,13 @@
 package com.kodilla.sudoku.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Sections {
+    private final Map<Integer, List<Coordinate>> sections = new HashMap<>();
+
     private final List<Coordinate> section1 = new ArrayList<>();
     private final List<Coordinate> section2 = new ArrayList<>();
     private final List<Coordinate> section3 = new ArrayList<>();
@@ -38,30 +41,18 @@ public class Sections {
         return -1;
     }
 
-    public List<Coordinate> getSection(int i) {
-        switch (i) {
-            case 1:
-                return getSection1();
-            case 2:
-                return getSection2();
-            case 3:
-                return getSection3();
-            case 4:
-                return getSection4();
-            case 5:
-                return getSection5();
-            case 6:
-                return getSection6();
-            case 7:
-                return getSection7();
-            case 8:
-                return getSection8();
-            case 9:
-                return getSection9();
-            default:
-                System.out.println("There is no such section!");
-                return null;
-        }
+    public List<Coordinate> getSectionCoordinates(int i) {
+        sections.put(1, getSection1());
+        sections.put(2, getSection2());
+        sections.put(3, getSection3());
+        sections.put(4, getSection4());
+        sections.put(5, getSection5());
+        sections.put(6, getSection6());
+        sections.put(7, getSection7());
+        sections.put(8, getSection8());
+        sections.put(9, getSection9());
+
+        return sections.get(i);
     }
 
     private List<Coordinate> getSection1() {
@@ -200,10 +191,4 @@ public class Sections {
 
         return section9;
     }
-
-    public int determinateSection_MapBased(Coordinate coordinate) {
-        Map<Coordinate, Integer> sectionsForCoordinates = Initializer.initSectionsForCoordinatesMap();
-        return sectionsForCoordinates.get(coordinate);
-    }
-
 }
