@@ -9,7 +9,7 @@ public class CompanySalaryProcessor implements SalaryProcessor {
         BigDecimal sum = BigDecimal.ZERO;
         for (Employee employee : employees) {
             System.out.println(employee);
-            sum =   sum.add(employee.getBaseSalary());
+            sum = sum.add(employee.getBaseSalary());
         }
         return sum;
     }
