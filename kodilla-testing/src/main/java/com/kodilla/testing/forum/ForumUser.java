@@ -42,9 +42,9 @@ public class ForumUser {
         return thePost;
     }
 
-    public ForumComment getComment(int commentNumber){
+    public ForumComment getComment(int commentNumber) {
         ForumComment theComment = null;
-        if (commentNumber >= 0 && commentNumber < comments.size()){
+        if (commentNumber >= 0 && commentNumber < comments.size()) {
             theComment = comments.get(commentNumber);
         }
         return theComment;
@@ -59,7 +59,7 @@ public class ForumUser {
         return result;
     }
 
-    public boolean removeComment(ForumComment theComment){
+    public boolean removeComment(ForumComment theComment) {
         boolean result = false;
         if (comments.contains(theComment)){
             comments.remove(theComment);

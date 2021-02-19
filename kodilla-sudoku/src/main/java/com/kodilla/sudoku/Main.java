@@ -20,8 +20,9 @@ public class Main {
 
         while (!gameFinished) {
             System.out.println("Please insert some values. " +
-                    "\nFormat: \"[column 1-9],[row 1-9],[value 1-9]\", e.g. \"3,8,1\" sets in column=3, row=8, value=1" +
-                    "\nEnter SUDOKU if you want to solve yours entered sudoku");
+                    "\nFormat: \"[column 1-9],[row 1-9],[value 1-9]\", e.g. \"3,8,1\" sets in column=3, row=8, value=1." +
+                    "\n\nIf you want to use some test data just type \"TEST1\" or \"TEST2\" or \"TEST3\" or \"TEST4\" to fill sudoku with predetermined values." +
+                    "\n\nEnter SUDOKU if you want to solve sudoku with current entered values.");
             userRequest = scanner.nextLine();
 
             switch (userRequest) {

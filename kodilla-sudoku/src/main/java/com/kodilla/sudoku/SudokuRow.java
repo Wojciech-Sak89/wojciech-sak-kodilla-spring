@@ -37,7 +37,7 @@ public class SudokuRow {
         for (SudokuElement sudokuElement : sudokuElements) {
             counter++;
             s
-                    .append(sudokuElement.getCoordinate().getSection() % 2 == 0 ? ANSI_BRIGHT_BLUE : ANSI_BRIGHT_BLACK)
+                    .append(sudokuElement.getCoordinate().getSection() % 2 == 0 ? ANSI_BRIGHT_BLUE : ANSI_RED)
                     .append(sudokuElement.getValue())
                     .append(ANSI_RESET)
                     .append(counter == 3 || counter == 6 ? " ** " : "|");

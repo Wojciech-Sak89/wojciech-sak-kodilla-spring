@@ -49,7 +49,7 @@ public class PolishAirports {
         citiesWithAirports.stream()
                 .filter(depCity -> depCity.getCityName().equals(departureCity))
                 .flatMap(depCity -> depCity.getDestinationCities().stream())
-                .filter(depCity -> citiesWithConnectionTo(destinationCity).contains(depCity))
+                .filter(candidateForConnectingCity -> citiesWithConnectionTo(destinationCity).contains(candidateForConnectingCity))
                 .map(DepartureCity::getCityName)
                 .forEach(System.out::println);
     }

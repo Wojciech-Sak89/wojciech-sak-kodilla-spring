@@ -11,10 +11,10 @@ public class WeatherForecast {
     }
 
     public HashMap<Integer, Double> calculateForecast() {
-        HashMap<Integer, Double> resultMap = new HashMap<Integer, Double>();
+        HashMap<Integer, Double> resultMap = new HashMap<>();
 
         for(Map.Entry<Integer, Double> temperature :
-                temperatures.getTemperatures().entrySet()){
+                temperatures.getTemperatures().entrySet()) {
 
             // adding 1 celsius degree to current value
             // as a temporary weather forecast

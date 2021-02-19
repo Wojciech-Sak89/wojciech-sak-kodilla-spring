@@ -13,7 +13,5 @@ public class FileReaderWithoutHandling {
 
         Stream<String> fileLines = Files.lines(Paths.get(file.getPath()));
         fileLines.forEach(System.out::println);
-
-
     }
 }

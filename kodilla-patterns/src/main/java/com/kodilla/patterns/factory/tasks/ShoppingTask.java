@@ -3,7 +3,7 @@ package com.kodilla.patterns.factory.tasks;
 public class ShoppingTask implements Task {
     private final String taskName;
     private final String whatToBuy;
-    private double quantity;
+    private final double quantity;
     private boolean taskExecuted;
 
     public ShoppingTask(String taskName, String whatToBuy, double quantity) {

@@ -18,5 +18,4 @@ public class FlightSearch {
         return airports.get(flight.getArrivalAirport());
 
     }
-
 }

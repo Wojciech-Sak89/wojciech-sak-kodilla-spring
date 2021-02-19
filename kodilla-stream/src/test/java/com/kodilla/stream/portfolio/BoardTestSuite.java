@@ -132,7 +132,7 @@ public class BoardTestSuite {
         long longTasks = project.getTaskLists().stream()
                 .filter(inProgressTasks::contains)
                 .flatMap(tl -> tl.getTasks().stream())
-                .map(t -> t.getCreated())
+                .map(Task::getCreated)
                 .filter(d -> d.compareTo(LocalDate.now().minusDays(10)) <= 0)
                 .count();
 

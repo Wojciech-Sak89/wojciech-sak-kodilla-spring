@@ -12,9 +12,12 @@ public class FacebookTestingApp {
 
     public static final String XPATH_WAIT_FOR_REGISTER_BUTTON = "//div[contains(@class, \"_1lch\")]/button[contains(@class, \"_6j mvm _6wk _6wl _58mi _6o _6v\")]";
 
-    public static final String XPATH_BIRTH_DATE_DAY = "//span[contains(@class, _5k_4)]/select[contains(@class, \"_9407 _5dba _8esg\")][1]";
-    public static final String XPATH_BIRTH_DATE_MONTH = "//span[contains(@class, _5k_4)]/select[contains(@class, \"_9407 _5dba _8esg\")][2]";
-    public static final String XPATH_BIRTH_DATE_YEAR = "//span[contains(@class, _5k_4)]/select[contains(@class, \"_9407 _5dba _8esg\")][3]";
+    public static final String XPATH_BIRTH_DATE_DAY = "//span[contains(@class, \"_5k_4\")]/select[contains(@class, \"_9407 _5dba _8esg\")][1]";
+    public static final String XPATH_BIRTH_DATE_DAY2 = "//span[contains(@class, \"_5k_4\")]//select[contains(@class, \"_9407 _5dba _9hk6 _8esg\")][1]";
+    public static final String XPATH_BIRTH_DATE_MONTH = "//span[contains(@class, \"_5k_4\")]/select[contains(@class, \"_9407 _5dba _8esg\")][2]";
+    public static final String XPATH_BIRTH_DATE_MONTH2 = "//span[contains(@class, \"_5k_4\")]//select[contains(@class, \"_9407 _5dba _9hk6 _8esg\")][2]";
+    public static final String XPATH_BIRTH_DATE_YEAR = "//span[contains(@class, \"_5k_4\")]/select[contains(@class, \"_9407 _5dba _8esg\")][3]";
+    public static final String XPATH_BIRTH_DATE_YEAR2 = "//span[contains(@class, \"_5k_4\")]//select[contains(@class, \"_9407 _5dba _9hk6 _8esg\")][3]";
 
     public static void main(String[] args) throws InterruptedException {
         WebDriver driver = WebDriverConfig.getDriver(WebDriverConfig.CHROME);
@@ -31,17 +34,20 @@ public class FacebookTestingApp {
         Thread.sleep(3000);
 
         while (!driver.findElement(By.xpath(XPATH_WAIT_FOR_REGISTER_BUTTON)).isDisplayed());
+//        System.out.println(XPATH_WAIT_FOR_REGISTER_BUTTON);
+//
+//        Thread.sleep(3000);
 
-        WebElement birthDayComboBox = driver.findElement(By.xpath(XPATH_BIRTH_DATE_DAY));
+        WebElement birthDayComboBox = driver.findElement(By.xpath(XPATH_BIRTH_DATE_DAY2));
         Select selectBirthDay = new Select(birthDayComboBox);
-        selectBirthDay.selectByIndex(20);
+        selectBirthDay.selectByIndex(5);
 
-        WebElement birthMonthComboBox = driver.findElement(By.xpath(XPATH_BIRTH_DATE_MONTH));
+        WebElement birthMonthComboBox = driver.findElement(By.xpath(XPATH_BIRTH_DATE_MONTH2));
         Select selectBirthMonth = new Select(birthMonthComboBox);
         selectBirthMonth.selectByValue("7");
 
-        WebElement birthYearComboBox = driver.findElement(By.xpath(XPATH_BIRTH_DATE_YEAR));
+        WebElement birthYearComboBox = driver.findElement(By.xpath(XPATH_BIRTH_DATE_YEAR2));
         Select selectBirthYear = new Select(birthYearComboBox);
-        selectBirthYear.selectByValue("1973");
+        selectBirthYear.selectByValue("1983");
     }
 }

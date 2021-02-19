@@ -30,7 +30,7 @@ public class GlutenFreeShop implements Shop {
             applyDiscount(order);
 
         } else {
-            System.out.println("Sorry, you are in wrong shop");
+            System.out.println("Sorry, you are in a wrong shop");
         }
     }
 

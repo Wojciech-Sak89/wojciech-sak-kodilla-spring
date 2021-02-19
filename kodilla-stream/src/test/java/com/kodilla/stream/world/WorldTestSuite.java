@@ -7,8 +7,6 @@ import java.math.BigDecimal;
 
 public class WorldTestSuite {
 
-//    napisz test testGetPeopleQuantity(), który przetestuje czy metoda getPeopleQuantity() klasy World działa prawidłowo
-
     @Test
     public void testGetPeopleQuantity() {
         //Given
